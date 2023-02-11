@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8">
+    <title>Prisijungimas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="/static/tamo.png">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="content">
+    <h1>Prisijungimas prie {{ appId }}</h1>
+    <div class="selector" href="/v2.0/confirm">
+        Tęsti kaip {{ name }}
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" fill="currentColor" class="bi"
+             viewBox="0 0 23 23">
+            <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"></path>
+        </svg>
+    </div>
+    <div class="selector" href="/v2.0/logout">
+        Ne jūs?
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" fill="currentColor" class="bi"
+             viewBox="0 0 23 23">
+            <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"></path>
+        </svg>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.selector').forEach(selector => {
+        selector.addEventListener('click', () => {
+            // POST to the URL
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = selector.getAttribute('href');
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+</script>
+</body>
+</html>

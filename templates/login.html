@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8">
+    <title>Prisijungimas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&amp;display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="/static/tamo.png">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="content">
+    <h1>Prisijungimas prie {{ appId }}</h1>
+    <div class="selector" href="/microsoft/login">
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 23 23">
+            <path fill="#f3f3f3" d="M0 0h23v23H0z"></path>
+            <path fill="#f35325" d="M1 1h10v10H1z"></path>
+            <path fill="#81bc06" d="M12 1h10v10H12z"></path>
+            <path fill="#05a6f0" d="M1 12h10v10H1z"></path>
+            <path fill="#ffba08" d="M12 12h10v10H12z"></path>
+        </svg>
+        Prisijungti su Microsoft
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" fill="currentColor" class="bi"
+             viewBox="0 0 23 23">
+            <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"></path>
+        </svg>
+    </div>
+    <div class="selector" href="/tamo/login">
+        <img src="/static/tamo.png" alt="tamo" height="40"/>
+        Prisijungti su Tamo
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" fill="currentColor" class="bi"
+             viewBox="0 0 23 23">
+            <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"></path>
+        </svg>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.selector').forEach(selector => {
+        selector.addEventListener('click', () => {
+            window.location.href = selector.getAttribute('href');
+        });
+    });
+</script>
+</body>
+</html>
