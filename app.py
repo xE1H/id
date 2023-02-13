@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
-from config import URL, authorised_clients, pkpass
+from config import URL, authorised_clients, pkpass, ms_client_id, enableTest
 
 issuer = URL
 
@@ -74,7 +74,7 @@ def issue_jwt(name, intended_aud):
 
 app = Flask(__name__)
 
-app.secret_key = "sdaasddsfrjg438566574546g7k80g4k567f450l6dff6309745fl63f-45876f354l-36f450769lf3-4560f374506-f84"
+app.secret_key = pkpass
 
 
 # Make session permanent
@@ -86,7 +86,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    return "<a href='/v2.0/authorize?client_id=client&redirect_uri=http://localhost:5000/test/redirect'>Login</a>"
+    return "ID"
 
 
 @app.route('/test/redirect')
@@ -167,9 +167,9 @@ def microsoft_login():
     nonce = get_random_string(32)
     session['nonce'] = nonce
     return redirect("https://login.microsoftonline.com/1e950737-93b0-4876-a969-e74b03acddac/oauth2/v2.0/authorize" +
-                    "?client_id=f4ecaa21-8521-402c-8cb9-dd8b51399d77" +
+                    "?client_id=" + ms_client_id +
                     "&response_type=id_token" +
-                    "&redirect_uri=http://localhost:5000/microsoft/callback" +
+                    "&redirect_uri=" + URL + "/microsoft/callback" +
                     "&response_mode=form_post" +
                     "&scope=openid%20profile" +
                     f"&nonce={nonce}")
@@ -193,7 +193,7 @@ def microsoft_callback():
         id_token = request.form['id_token']
         pk = ms_jwks_client.get_signing_key_from_jwt(id_token)
         user_data = jwt.decode(id_token, pk.key, algorithms=['RS256'],
-                               audience='f4ecaa21-8521-402c-8cb9-dd8b51399d77')
+                               audience=ms_client_id)
 
         if user_data['nonce'] != session['nonce']:
             log("Nonce mismatch in Microsoft callback: expected " + session['nonce'] + ", but got " + user_data['nonce'])
@@ -222,7 +222,7 @@ def tamo_login():
     else:
         username = request.form['username']
         password = request.form['password']
-        if username.startswith("xTest222") and username.endswith(password):
+        if username == password and enableTest:
             session['name'] = password
             return issue_jwt(password, session['our_client_id'])
         chrome_options = Options()
@@ -239,14 +239,15 @@ def tamo_login():
             driver.close()
             return redirect("/tamo/login?error=1")
 
-        name = driver.find_element_by_css_selector(
-            'html > body.container > div#header_section.row > div.col-md-14 > div > div > div.header-box > div > div > div > div > div').text
         schoolName = driver.find_element_by_css_selector(
             'html > body.container > div#top_section.row > div.col-md-14 > div.row.top_section_back > div.col-md-10 > span').text
 
         if schoolName != 'Vilniaus licėjus':
             driver.close()
             return redirect("/tamo/login?error=2")
+
+        name = driver.find_element_by_css_selector(
+            'html > body.container > div#header_section.row > div.col-md-14 > div > div > div.header-box > div > div > div > div > div').text
 
         driver.close()
         session['name'] = name
