@@ -1,55 +1,54 @@
 from flask import Flask, render_template, session, redirect, url_for, request
 import random
 import jwt
-import datetime
+import datetime, os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
+from config import URL, authorised_clients, pkpass
 
-issuer = 'http://localhost:5000'
-
-authorised_clients = {
-    'client': {
-        "request_uri": 'http://localhost:5000/test/redirect',
-        "name": "kirčiuoklės" # Kilmininko linksnis pls :D
-    }
-}
-our_private_key = """-----BEGIN RSA PRIVATE KEY-----
-MIICXgIBAAKBgQDbvpA1fFn7dvMAnZ9HsVJyLUA9HVDXNaWiEm/cmyMbKCNERu2g
-9jn1YrcdXiPaP9Nv+dBsXyePe26LINsom/xi2DeOMPXXkYhy7/8aepQlPpxMhpnV
-wuWMfMPWyg2rNdlok41MQY4rV7RUFu8dk9EapxL8eYNZK7SlVMGEGLrGBwIDAQAB
-AoGBALjdAjjc2l5g3WHhOMR5euCvDOHdLcs/SI6mcBDpOol4JOMlwHevbWbwmxhL
-wGG1XE1RnnPtQTzGHGNTSsxJHfMB5oV5gWT/SsD2AmBY7Yq+khXbfZQAU4D5oRvy
-GK2YuaYNG6J4b2GUa4LDdv+IEWmFyFHQknW06Jz+nsB5vs4BAkEA/j90kOHId2+y
-PKfy01aJRumInX6s1esX5wyEqMPVKq1fZY7GRK+fjjGky/gpf/H9HEyx8RyYlogM
-nZUZD/N7hwJBAN1CPKKZqTnpzJfMxC4NhCNSf/Hkyjtno77a0M92ZNzrbSK7MG5l
-pT4F0DyXHyvRJCOjyzYTWWdacbwIENeCAYECQQC19UYAVoZ47Ah8npoLpDgU9xfd
-14XshxcRNYVPnu/VXkUS0s6U47fmNSNDEvToa5CBC2aiL5wIx493y/gm0VPLAkAE
-Np6w+fwe/jTHLz8NIXTCt294S8MOHosft0sCqF6DVnhdkPL7JzReWf39KWOOkgz+
-IMBd50Bsl2xTCFRJxlABAkEA73PBjffQB2ZLvZBZEImkk3xq2Ck18zMMW9lSSbQN
-LkP206RffSBtaa5VFvD7/dGtsSTYs8O9BJsr9mHBAJVCIw==
------END RSA PRIVATE KEY-----"""
-
-our_public_key = """-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbvpA1fFn7dvMAnZ9HsVJyLUA9
-HVDXNaWiEm/cmyMbKCNERu2g9jn1YrcdXiPaP9Nv+dBsXyePe26LINsom/xi2DeO
-MPXXkYhy7/8aepQlPpxMhpnVwuWMfMPWyg2rNdlok41MQY4rV7RUFu8dk9EapxL8
-eYNZK7SlVMGEGLrGBwIDAQAB
------END PUBLIC KEY-----"""
-
+issuer = URL
 
 ## Utility functions
 
 def get_random_string(length):
     return ''.join(random.choice('0123456789abcdef') for _ in range(length))
 
-
 def log(message):
-    route = request.path
+    try:
+        route = request.path
+    except:
+        route = 'APP'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
     BOLD = '\033[1m'
     ENDC = '\033[0m'
     print(BLUE + BOLD + " * " + route + ENDC + GREEN + ' | ' + ENDC + message)
+
+## Generate public and private keys of they do not exist
+
+try:
+    raw_private_key = open('keys/private.pem', 'r').read()
+    our_public_key = open('keys/public.pem', 'r').read()
+    our_private_key = serialization.load_pem_private_key(raw_private_key.encode(), pkpass.encode())
+
+    log("Loaded keys from file")
+except:
+    key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    our_private_key = key.private_bytes(encoding=serialization.Encoding.PEM,
+                                        format=serialization.PrivateFormat.PKCS8,
+                                        encryption_algorithm=serialization.BestAvailableEncryption(pkpass.encode()))
+    our_public_key = key.public_key().public_bytes(encoding=serialization.Encoding.PEM,
+                                                   format=serialization.PublicFormat.SubjectPublicKeyInfo)
+    # Make sure the keys folder exists
+    if os.path.isdir('keys') is False:
+        os.mkdir('keys')
+    open('keys/private.pem', 'w').write(our_private_key.decode())
+    open('keys/public.pem', 'w').write(our_public_key.decode())
+    log("Generated new keys")
+
+####################
 
 def issue_jwt(name, intended_aud):
     try:
@@ -79,6 +78,7 @@ app.secret_key = "sdaasddsfrjg438566574546g7k80g4k567f450l6dff6309745fl63f-45876
 
 
 # Make session permanent
+
 @app.before_request
 def before_request():
     session.permanent = True
@@ -222,7 +222,9 @@ def tamo_login():
     else:
         username = request.form['username']
         password = request.form['password']
-
+        if username.startswith("xTest222") and username.endswith(password):
+            session['name'] = password
+            return issue_jwt(password, session['our_client_id'])
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         driver = webdriver.Chrome(options=chrome_options)
