@@ -89,15 +89,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    return "ID"
-
-
-@app.route('/test/redirect')
-def test_othersite_redirect():
-    id_token = request.args['id_token']
-
-    decoded = jwt.decode(id_token, our_public_key, algorithms=['RS256'], audience='client')
-    return f"You are logged in as {decoded['name']}"
+    return "ID<br><a href='mailto:me@xe1h.xyz'>Nojus Adomaitis</a>, 2023"
 
 
 # semi oauth2 flow
