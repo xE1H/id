@@ -112,7 +112,7 @@ def authorize():
     try:
         client_id = request.args['client_id']
         redirect_uri = request.args['redirect_uri']
-        if client_id not in authorised_clients or authorised_clients[client_id]['request_uri'] != redirect_uri:
+        if client_id not in authorised_clients or redirect_uri not in authorised_clients[client_id]['request_uris']:
             log("Client not authorised or redirect URI does not match")
             return "Bad request", 400
     except KeyError:
@@ -238,7 +238,8 @@ def tamo_login():
 
         driver.find_element_by_css_selector('.c_btn.submit').click()
 
-        if driver.current_url != 'https://dienynas.tamo.lt/DashboardStudents':
+
+        if driver.current_url != 'https://dienynas.tamo.lt/DashboardStudents' and driver.current_url != 'https://dienynas.tamo.lt/Dashboard':
             driver.close()
             return redirect("/tamo/login?error=1")
 

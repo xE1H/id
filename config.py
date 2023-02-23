@@ -8,19 +8,27 @@ URL = 'http://localhost:5000'
 
 authorised_clients = {
     'fablab': {
-        "request_uri": 'http://localhost:3000/login',
-        "name": "fablab'o sistemos"
+        "request_uris": [
+            'http://localhost:3000/login'
+        ],
+        "name": "fablab'o sistemos" # K. linksnis
+    },
+    'kirciuokle': {
+        "request_uris": [
+            'http://localhost:3000/login'
+        ],
+        "name": "kirčiuoklės"
     }
 }
 
 ## Microsoft logino conf
 
-ms_client_id = "f4ecaa21-8521-402c-8cb9-dd8b51399d77"
+ms_client_id = "632effdc-4ee3-4cb6-9143-f773f1ed2069"
 
 ## Tamo logino conf
 
 enableTest = False
-# Leidzia prisijungti bet kokiu vardu, kai username == password == vardas, kurio norite
+# Leidzia prisijungti bet kokiu vardu, kai username == password == vardas, kurio norite (per tamo)
 
 ## Private key pass
 
