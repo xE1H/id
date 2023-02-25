@@ -223,6 +223,7 @@ def tamo_login():
             return issue_jwt(password, session['our_client_id'])
         chrome_options = Options()
         chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
         driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
         driver.get("https://dienynas.tamo.lt/Prisijungimas/Login")
 
