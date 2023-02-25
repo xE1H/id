@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from config import URL, authorised_clients, pkpass, ms_client_id, enableTest
+from webdriver_manager.chome import ChromeDriverManager
 issuer = URL
 
 ##### ID sistema
@@ -222,7 +223,7 @@ def tamo_login():
             return issue_jwt(password, session['our_client_id'])
         chrome_options = Options()
         chrome_options.add_argument("--headless")
-        driver = webdriver.Chrome(options=chrome_options)
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
         driver.get("https://dienynas.tamo.lt/Prisijungimas/Login")
 
         driver.find_element_by_id('UserName').send_keys(username)
