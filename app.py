@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 from config import URL, authorised_clients, pkpass, ms_client_id, enableTest
-from webdriver_manager.chome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 issuer = URL
 
 ##### ID sistema
