@@ -48,8 +48,7 @@ def edit_application(client_id):
             return redirect(url_for('dashboard'))
 
         app = db.get_app(client_id)
-        print(app)
-
+        app['redirect_uris'] = "\n".join(app['redirect_uris'])
         return render_template('editApp.html', app=app)
     else:
         if 'name' not in session:

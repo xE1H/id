@@ -14,7 +14,7 @@ class DB:
 
     def register_app(self, owner, name, kilmininkas, email, redirect_uris, client_id):
         self.cur.execute('INSERT INTO applications VALUES(?, ?, ?, ?, ?, ?)',
-                         (owner, name, kilmininkas, email, redirect_uris, client_id))
+                         (owner, name, kilmininkas, email, redirect_uris.replace("\r", ""), client_id))
         self.conn.commit()
 
     def get_apps(self):
@@ -30,7 +30,7 @@ class DB:
     def edit_app(self, owner, name, kilmininkas, email, redirect_uris, client_id):
         self.cur.execute(
             'UPDATE applications SET owner = ?, name = ?, kilmininkas = ?, email = ?, redirect_uris = ? WHERE client_id = ?',
-            (owner, name, kilmininkas, email, redirect_uris, client_id))
+            (owner, name, kilmininkas, email, redirect_uris.replace("\r", ""), client_id))
         self.conn.commit()
 
     def get_app(self, client_id):
