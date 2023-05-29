@@ -59,7 +59,7 @@ def authorize_confirm():
         return issue_jwt(session['name'], session['our_client_id'])
 
 
-@app.route('/v2.0/logout', methods=['POST'])
+@app.route('/v2.0/logout', methods=['GET', 'POST'])
 def logout():
     session.pop("name")
     return redirect(url_for('login'))
