@@ -45,7 +45,9 @@ class DB:
         self.conn.commit()
 
     def verify_app(self, client_id, redirect_uri):
-        app = self.get_app(client_id)
-        if redirect_uri in app['redirect_uris']:
-            return True
-        return False
+        try:
+            app = self.get_app(client_id)
+            if redirect_uri in app['redirect_uris']:
+                return True
+        finally:
+            return False
