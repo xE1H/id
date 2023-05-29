@@ -53,3 +53,11 @@ class DB:
             log("Verify app failed with error: " + str(ex))
         return False
 
+    def get_app_display_name(self, client_id):
+        try:
+            app = self.get_app(client_id)
+            return app['kilmininkas']
+        except Exception as ex:
+            log("Get app display name failed with error: " + str(ex))
+        return "Unknown"
+

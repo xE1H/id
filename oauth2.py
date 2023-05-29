@@ -2,8 +2,7 @@ from flask import render_template, session, redirect, url_for, request
 
 from app import app
 from keygen import our_public_key
-from utils import log, issue_jwt, is_valid_application
-from config import authorised_clients
+from utils import log, issue_jwt, is_valid_application, get_app_display_name
 
 
 @app.route('/v2.0/keys')
@@ -38,7 +37,7 @@ def login():
     if 'name' in session:
         return redirect(url_for('authorize_confirm'))
 
-    return render_template('login.html', appId=authorised_clients[session['our_client_id']]['name'])
+    return render_template('login.html', appId=get_app_display_name(session['our_client_id']))
 
 
 @app.route('/v2.0/confirm', methods=['GET', 'POST'])
@@ -51,7 +50,7 @@ def authorize_confirm():
             return redirect(url_for('login'))
 
         return render_template('authorize_confirm.html', name=session['name'],
-                               appId=authorised_clients[session['our_client_id']]['name'])
+                               appId=get_app_display_name(session['our_client_id']))
     else:
         if 'name' not in session:
             return redirect(url_for('login'))
