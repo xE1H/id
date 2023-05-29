@@ -49,5 +49,7 @@ class DB:
             app = self.get_app(client_id)
             if redirect_uri in app['redirect_uris']:
                 return True
+        except Exception as ex:
+            log("Verify app failed with error: " + str(ex))
         finally:
             return False
