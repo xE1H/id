@@ -39,7 +39,7 @@ def issue_jwt(name, intended_aud):
 
 
 def is_valid_application(client_id, redirect_uri):
-    hard_coded = client_id not in authorised_clients or (
-            redirect_uri not in authorised_clients[client_id]['request_uris'])
+    hard_coded = client_id in authorised_clients or (
+            redirect_uri in authorised_clients[client_id]['request_uris'])
 
     return hard_coded or db.verify_app(client_id, redirect_uri)

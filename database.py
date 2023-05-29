@@ -51,5 +51,5 @@ class DB:
                 return True
         except Exception as ex:
             log("Verify app failed with error: " + str(ex))
-        finally:
-            return False
+        return False
+
