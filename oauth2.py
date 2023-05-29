@@ -16,7 +16,7 @@ def authorize():
     try:
         client_id = request.args['client_id']
         redirect_uri = request.args['redirect_uri']
-        if is_valid_application(client_id, redirect_uri):
+        if not is_valid_application(client_id, redirect_uri):
             log("Client not authorised or redirect URI does not match")
             return "Bad request", 400
     except KeyError as e:
