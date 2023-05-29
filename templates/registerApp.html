@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikacijos registravimas</title>
+</head>
+<body>
+    <a>Prisijungęs kaip {{ session.name }} <a href="/v2.0/logout">Ne tu?</a></a>
+    <br>
+    <h1>Aplikacijos registravimas</h1>
+    <form action="/registerApp" method="POST">
+        <label for="name">Aplikacijos pavadinimas</label><br>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <label for="kilmininkas">Pavadinimas kilmininko linksniu (prisijungimas prie KO?, pradėti mažąja raide)</label><br>
+        <input type="text" name="kilmininkas" id="kilmininkas" required>
+        <br>
+        <label for="client_id">Client ID (naudojamas requestuose, unique)</label><br>
+        <input type="text" name="client_id" id="client_id" required>
+        <br>
+        <label for="redirect_uris">Autorizuoti URIs (į kokius URI id.licejus.lt leidžia redirectinti, atskirti kableliu)</label><br>
+        <textarea name="redirect_uris" id="redirect_uris" cols="30" rows="3"></textarea>
+        <br><br>
+        <label for="email">Tavo el. paštas (susisiekimui, jei ką)</label>
+        <input type="email" name="email" id="email" required>
+        <br><br>
+        <button type="submit">Registruoti</button>
+    </form>
+</body>
+</html>

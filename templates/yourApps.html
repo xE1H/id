@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tavo aplikacijos</title>
+</head>
+<body>
+    <a>Prisijungęs kaip {{ session.name }} <a href="/v2.0/logout">Ne tu?</a></a>
+    <br><br>
+    <h1>Tavo aplikacijos</h1>
+    <br>
+    {% for app in apps if app.owner == session.name %}
+        <a>{{ app.name }} - <a href="/editApp/{{ app.client_id }}">Keisti</a> - <a href="/deleteApp/{{ app.client_id }}">Trinti</a></a>
+        <br>
+    {% endfor %}
+    {% if app|length == 0 %}
+        <a>Neturi aplikacijų, kuriuos registruotos tavo vardu!</a>
+    {% endif %}
+</body>
+</html>

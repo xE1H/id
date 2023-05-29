@@ -7,17 +7,11 @@ URL = 'http://localhost:5000'
 ## Autorizuoti klientai
 
 authorised_clients = {
-    'fablab': {
+    'dashboard': {
         "request_uris": [
-            'http://localhost:3000/login'
+            URL + '/dashboard'
         ],
-        "name": "fablab'o sistemos" # K. linksnis
-    },
-    'kirciuokle': {
-        "request_uris": [
-            'http://localhost:3000/login'
-        ],
-        "name": "kirčiuoklės"
+        "name": "aplikacijų valdymo"
     }
 }
 

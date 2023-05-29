@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visos aplikacijos</title>
+</head>
+<body>
+    <a>Prisijungęs kaip {{ session.name }} <a href="/v2.0/logout">Ne tu?</a></a>
+    <br><br>
+    <h1>Visos aplikacijos</h1>
+    <br>
+    {% for app in apps %}
+        <a>{{ app.name }} - <a href="mailto:{{ app.email }}">{{ app.owner }}</a></a>
+        <br>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aplikacijos modifikavimas</title>
+</head>
+<body>
+    <a>Prisijungęs kaip {{ session.name }} <a href="/v2.0/logout">Ne tu?</a></a>
+    <br>
+    <h1>Aplikacijos modifikavimas</h1>
+    <form method="POST">
+        <label for="name">Aplikacijos pavadinimas</label><br>
+        <input type="text" name="name" id="name" value="{{ app.name }}">
+        <br>
+        <label for="kilmininkas">Pavadinimas kilmininko linksniu (prisijungimas prie KO?, pradėti mažąja raide)</label><br>
+        <input type="text" name="kilmininkas" id="kilmininkas" value="{{ app.kilmininkas }}">
+        <br>
+        <label for="client_id">Client ID (naudojamas requestuose, unique)</label><br>
+        <a><b> {{ app.client_id }} </b></a>
+        <br>
+        <label for="redirect_uris">Autorizuoti URIs (į kokius URI id.licejus.lt leidžia redirectinti, po vieną į eilutę)</label><br>
+        <textarea name="redirect_uris" id="redirect_uris" cols="30" rows="3">{{ app.redirect_uris }}</textarea>
+        <br><br>
+        <label for="email">Tavo el. paštas (susisiekimui, jei ką)</label>
+        <input type="email" name="email" id="email" value="{{ app.email }}">
+        <br><br>
+        <button type="submit">Modifikuoti</button>
+    </form>
+</body>
+</html>
