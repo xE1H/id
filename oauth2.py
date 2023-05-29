@@ -62,4 +62,6 @@ def authorize_confirm():
 @app.route('/v2.0/logout', methods=['GET', 'POST'])
 def logout():
     session.pop("name")
-    return redirect(url_for('login'))
+
+    redirect_link = request.args.get('redirect')
+    return redirect("/") if not redirect_link else redirect(redirect_link)
