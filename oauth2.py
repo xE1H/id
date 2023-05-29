@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, url_for, request
 
-from __main__ import app
+from app import app
 from keygen import our_public_key
 from utils import log, issue_jwt, is_valid_application
 from config import authorised_clients

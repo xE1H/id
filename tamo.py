@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
-from __main__ import app
+from app import app
 from config import authorised_clients, enableTest
 from utils import issue_jwt
 

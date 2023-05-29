@@ -1,7 +1,7 @@
 import jwt
 from flask import session, redirect, request
 
-from __main__ import app
+from app import app
 from config import URL, ms_client_id
 from utils import get_random_string, log, issue_jwt
 
