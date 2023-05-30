@@ -1,4 +1,3 @@
-import markdown
 from flask import Flask, session, render_template
 
 from config import pkpass
@@ -7,14 +6,6 @@ from log import log
 # ID sistema
 # Nojus Adomaitis, 2023
 # xE1H.xyz
-
-log("Generating docs", "MAIN")
-with open("/static/docs.md", "r") as f:
-    docs = markdown.markdown(f.read())
-
-with open("templates/docs.html", "w+") as f:
-    f.write(docs)
-
 
 app = Flask(__name__)
 
