@@ -1,10 +1,20 @@
-from flask import Flask, session, redirect
+import markdown
+from flask import Flask, session, render_template
 
 from config import pkpass
+from log import log
 
 # ID sistema
 # Nojus Adomaitis, 2023
 # xE1H.xyz
+
+log("Generating docs", "MAIN")
+with open("/static/docs.md", "r") as f:
+    docs = markdown.markdown(f.read())
+
+with open("templates/docs.html", "w+") as f:
+    f.write(docs)
+
 
 app = Flask(__name__)
 
@@ -24,7 +34,7 @@ def index():
 
 @app.route("/docs")
 def docs():
-    return redirect("https://hackmd.io/@xE1H/ryD7UtMI3")
+    return render_template("docs.html")
 
 import oauth2, tamo, microsoft, management  # NOQA
 

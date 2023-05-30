@@ -3,6 +3,7 @@ import sqlite3
 from config import authorised_clients
 from log import log
 
+
 class DB:
     def __init__(self):
         self.conn = sqlite3.connect('applications.db', check_same_thread=False)
@@ -36,7 +37,8 @@ class DB:
     def get_app(self, client_id):
         self.cur.execute('SELECT * FROM applications WHERE client_id = ?', (client_id,))
         row = self.cur.fetchone()
-        row = {'owner': row[0], 'name': row[1], 'kilmininkas': row[2], 'email': row[3], 'redirect_uris': row[4].split("\n"),
+        row = {'owner': row[0], 'name': row[1], 'kilmininkas': row[2], 'email': row[3],
+               'redirect_uris': row[4].split("\n"),
                'client_id': row[5]}
         return row
 
@@ -60,4 +62,3 @@ class DB:
         except Exception as ex:
             log("Get app display name failed with error: " + str(ex))
         return "Unknown"
-
