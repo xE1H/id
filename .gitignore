@@ -2,3 +2,4 @@
 .idea/*
 keys
 config.py
+applications.db

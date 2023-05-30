@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template
+from flask import Flask, session, redirect
 
 from config import pkpass
 from log import log
@@ -23,9 +23,11 @@ def before_request():
 def index():
     return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a>"
 
+
 @app.route("/docs")
 def docs():
-    return render_template("docs.html")
+    return redirect("https://hackmd.io/@xE1H/ryD7UtMI3")
+
 
 import oauth2, tamo, microsoft, management  # NOQA
 
