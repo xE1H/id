@@ -1,9 +1,6 @@
 from flask import request
 from datetime import datetime
 
-# Create log file if it doesn't exist
-f = open("log.txt", "a")
-
 
 def log(message, route=None):
     if route is None:
@@ -21,4 +18,5 @@ def log(message, route=None):
     ENDC = '\033[0m'
 
     print(BLUE + BOLD + " * " + route + ENDC + GREEN + ' | ' + CYAN + str(timestamp) + GREEN + " | " + ENDC + message)
-    f.write(f"{timestamp} | {route} | {message}\n")
+    with open("log.txt", "a") as f:
+        f.write(f"{timestamp} | {route} | {message}\n")
