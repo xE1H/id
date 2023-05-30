@@ -2,8 +2,10 @@ import jwt
 from flask import session, redirect, request
 
 from app import app
-from config import URL, ms_client_id
+from config import URL, ms_client_id, ms_client_secret
+from config import ms_tenant as TENANT
 from utils import get_random_string, log, issue_jwt
+from requests import get, post
 
 # Microsoft OpenID Connect
 
@@ -13,17 +15,14 @@ ms_jwks_client = jwt.PyJWKClient(ms_jwks_url)
 
 @app.route('/microsoft/login')
 def microsoft_login():
-    nonce = get_random_string(32)
-    session['nonce'] = nonce
-    return redirect("https://login.microsoftonline.com/1e950737-93b0-4876-a969-e74b03acddac/oauth2/v2.0/authorize" +
+    return redirect(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/authorize" +
                     "?client_id=" + ms_client_id +
-                    "&response_type=id_token" +
+                    "&response_type=code" +
                     "&redirect_uri=" + URL + "/microsoft/callback" +
                     "&response_mode=form_post" +
-                    "&scope=openid%20profile" +
+                    "&scope=offline_access%20user.read" +
                     "&domain_hint=licejus.lt" +
-                    "&prompt=select_account" +
-                    f"&nonce={nonce}")
+                    "&prompt=select_account")
 
 
 @app.route('/microsoft/callback', methods=['POST'])
@@ -41,21 +40,45 @@ def microsoft_callback():
         pass
 
     try:
-        id_token = request.form['id_token']
-        pk = ms_jwks_client.get_signing_key_from_jwt(id_token)
-        user_data = jwt.decode(id_token, pk.key, algorithms=['RS256'],
-                               audience=ms_client_id)
+        code = request.form['code']
+        access_token = post(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", data={
+            "client_id": ms_client_id,
+            "scope": "user.read",
+            "code": code,
+            "redirect_uri": URL + "/microsoft/callback",
+            "grant_type": "authorization_code",
+            "client_secret": ms_client_secret}).json()['access_token']
 
-        if user_data['nonce'] != session['nonce']:
-            log("Nonce mismatch in Microsoft callback: expected " + session['nonce'] + ", but got " + user_data[
-                'nonce'])
-            return redirect(session['our_redirect_uri'] + "?error=true")
+        raw_data = get("https://graph.microsoft.com/v1.0/me", headers={
+            "Authorization": "Bearer " + access_token
+        }).json()
 
-        name = user_data['name']
-        session['name'] = name
+        raw_title = raw_data['jobTitle']
+        grade = ""
+        roles = []
 
-        return issue_jwt(name, session['our_client_id'])
+        if "mokinys" in raw_title or "mokinė" in raw_title:
+            grade = raw_title.split(" ")[0]
+            grade = grade[:-1].upper() + grade[-1]
+            roles += ["student"]
+        if "mokytojas" in raw_title or "mokytoja" in raw_title:
+            roles += ["teacher"]
+
+        user_data = {
+            "full_name": raw_data['displayName'],
+            "first_name": raw_data['givenName'],
+            "last_name": raw_data['surname'],
+            "raw_title": raw_title,
+            "grade": grade,
+            "roles": roles,
+            # Other data that can not be gathered from Microsoft
+            "dependants": []
+        }
+
+        session["user_data"] = user_data
+
+        return issue_jwt(user_data, session['our_client_id'])
 
     except Exception as e:
-        log("Error decoding JWT in Microsoft callback: " + str(e))
+        log("Error in getting userdata in Microsoft callback: " + str(e))
         return redirect(session['our_redirect_uri'] + "?error=true")

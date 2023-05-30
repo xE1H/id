@@ -18,6 +18,8 @@ authorised_clients = {
 ## Microsoft logino conf
 
 ms_client_id = "632effdc-4ee3-4cb6-9143-f773f1ed2069"
+ms_tenant = "1e950737-93b0-4876-a969-e74b03acddac"  # organizacijos id
+ms_client_secret = "FRH8Q~Kf20OQJ7UYR1T60WLKij6TxmvdlXgJdc4z"
 
 ## Tamo logino conf
 

@@ -18,14 +18,19 @@ def get_random_string(length):
 from log import log  # For backwords compatibility
 
 
-def issue_jwt(name, intended_aud):
+def issue_jwt(user_data, intended_aud):
+    log("Issuing JWT for user: " + str(user_data["full_name"]) + " intended for: " + intended_aud)
     try:
         uri = session['our_redirect_uri']
         aud = session['our_client_id']
         if uri is not None and aud == intended_aud:
-            token = jwt.encode({'name': name, 'iss': issuer, 'aud': aud,
-                                'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
-                                    minutes=10)}, our_private_key, algorithm='RS256',
+            data = {'iss': issuer, 'aud': aud,'exp': datetime.datetime.now(tz=datetime.timezone.utc) +
+                                                     datetime.timedelta(minutes=10)}
+            data.update(user_data)
+            # log(str(data))
+            token = jwt.encode(data,
+                               our_private_key,
+                               algorithm='RS256',
                                headers={'kid': '87c0615c19dd98fdc301615d522601f5'})
             uri += f"?id_token={token}"
 

@@ -5,7 +5,7 @@
     <title>Aplikacijos modifikavimas</title>
 </head>
 <body>
-    <a>Prisijungęs kaip {{ session.name }} <a href="/v2.0/logout?redirect=/dashboard">Ne tu?</a></a>
+    <a>Prisijungęs kaip {{ session.user_data.full_name }} <a href="/v2.0/logout?redirect=/dashboard">Atsijungti</a></a>
     <br>
     <h1>Aplikacijos modifikavimas</h1>
     <form method="POST">

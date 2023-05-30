@@ -34,7 +34,7 @@ def login():
         log("Redirect URI not found")
         return "Bad request", 400
 
-    if 'name' in session:
+    if 'user_data' in session:
         return redirect(url_for('authorize_confirm'))
 
     return render_template('login.html', appId=get_app_display_name(session['our_client_id']))
@@ -46,21 +46,21 @@ def authorize_confirm():
         log("Redirect URI not found")
         return "Bad request", 400
     if request.method == 'GET':
-        if 'name' not in session:
+        if 'user_data' not in session:
             return redirect(url_for('login'))
 
-        return render_template('authorize_confirm.html', name=session['name'],
+        return render_template('authorize_confirm.html', name=session['user_data']["full_name"],
                                appId=get_app_display_name(session['our_client_id']))
     else:
-        if 'name' not in session:
+        if 'user_data' not in session:
             return redirect(url_for('login'))
 
-        return issue_jwt(session['name'], session['our_client_id'])
+        return issue_jwt(session['user_data'], session['our_client_id'])
 
 
 @app.route('/v2.0/logout', methods=['GET', 'POST'])
 def logout():
-    session.pop("name")
+    session.pop("user_data")
 
     redirect_link = request.args.get('redirect')
     return redirect("/") if not redirect_link else redirect(redirect_link)

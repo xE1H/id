@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matomi duomenys</title>
+</head>
+<body>
+    <a>Prisijungęs kaip {{ session.user_data.full_name }} <a href="/v2.0/logout?redirect=/dashboard">Atsijungti</a></a>
+    <br><br>
+    <h1>Jūsų matomi duomenys</h1>
+    <br>
+    <a id="data"></a>
+    <script>
+        var json = JSON.stringify({{ session.user_data|tojson }}, null, 4);
+        document.getElementById("data").innerHTML = json;
+    </script>
+</body>
+</html>
