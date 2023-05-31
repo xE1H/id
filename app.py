@@ -26,7 +26,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br> v" + build + " (" + date.strip() + ")"
+    return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br><br><br> v" + build + " (" + date.strip() + ")"
 
 
 @app.route("/docs")
