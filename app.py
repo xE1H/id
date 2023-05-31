@@ -1,11 +1,16 @@
 from flask import Flask, session, redirect
 
 from config import pkpass
-from log import log
 
 # ID sistema
 # Nojus Adomaitis, 2023
 # xE1H.xyz
+
+with open("build.number", "r") as f:
+    build = f.read()
+
+with open("date.number", "r") as f:
+    date = f.read()
 
 app = Flask(__name__)
 
@@ -21,7 +26,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a>"
+    return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br> v" + build + " (" + date + ")"
 
 
 @app.route("/docs")
