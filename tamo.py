@@ -69,7 +69,7 @@ def tamo_login():
                 continue
             # Get irasoId from URI
             driver.get(href)
-            if "kodas=MOK" in href:
+            if "kodas=MOK" in href and "kodas=MOKMOK" not in href:
                 duomenu_btn = driver.find_element_by_xpath("//a[contains(@href, '/Profilis/index/')]")
                 driver.get(duomenu_btn.get_attribute('href'))
 
