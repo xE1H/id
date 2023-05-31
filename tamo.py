@@ -1,5 +1,3 @@
-import time
-
 from flask import session, render_template, request, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
