@@ -1,12 +1,15 @@
 from flask import session, render_template, request, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 from app import app
-from config import authorised_clients, enableTest
-from utils import issue_jwt
 from log import log
+from utils import issue_jwt, get_app_display_name
+from config import authorised_clients, enableTest
 
 log("Getting chromedriver", "TAMO")
 chromedriver = ChromeDriverManager().install()
@@ -19,7 +22,7 @@ def tamo_login():
     except:
         return "Bad request", 400
     if request.method == 'GET':
-        return render_template('tamo_login.html', appId=authorised_clients[session['our_client_id']]['name'],
+        return render_template('tamo_login.html', appId=get_app_display_name(session['our_client_id']),
                                error=request.args.get('error'))
     else:
         username = request.form['username']
@@ -71,7 +74,9 @@ def tamo_login():
                 duomenu_btn = driver.find_element_by_xpath("//a[contains(@href, '/Profilis/index/')]")
                 driver.get(duomenu_btn.get_attribute('href'))
 
-                time.sleep(0.5)
+                WebDriverWait(driver, 3).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div.col-md-6.readonly_input')))
+
                 colmd6 = driver.find_elements_by_css_selector("div.col-md-6.readonly_input")
 
                 raw_name = colmd6[0].text.split(" ")
@@ -88,14 +93,18 @@ def tamo_login():
                     "//a[contains(@href, '/Naudotojas/PrisijungimoDuomenysProfile/')]")
                 tevo_duomenu_href = tevo_duomenu_btn.get_attribute('href')
                 driver.get(tevo_duomenu_href)
-                time.sleep(0.5)
+
+                WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, 'Vardas')))
+
                 first_name = driver.find_element_by_id("Vardas").get_attribute('value')
                 last_name = driver.find_element_by_id("Pavarde").get_attribute('value')
                 full_name = first_name + " " + last_name
                 grade = ""
 
                 driver.get(vaiko_duomenu_href)
-                time.sleep(0.5)
+                WebDriverWait(driver, 3).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div.col-md-6.readonly_input')))
+
                 colmd6 = driver.find_elements_by_css_selector("div.col-md-6.readonly_input")
 
                 raw_name = colmd6[0].text.split(" ")
