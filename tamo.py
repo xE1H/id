@@ -70,6 +70,7 @@ def tamo_login():
                 continue
             # Get irasoId from URI
             driver.get(href)
+            raw_title = ""
             if "kodas=MOK" in href and "kodas=MOKMOK" not in href:
                 duomenu_btn = driver.find_element_by_xpath("//a[contains(@href, '/Profilis/index/')]")
                 driver.get(duomenu_btn.get_attribute('href'))
@@ -84,6 +85,7 @@ def tamo_login():
                 first_name = "".join(raw_name[1:])
                 last_name = raw_name[0]
                 full_name = first_name + " " + last_name
+                raw_title = grade.lower() + " klasės mokin" + "ys" if first_name.endswith("s") else "ė"
                 roles += ["student"]
             if "kodas=TEVGLO" in href:
                 duomenu_btn = driver.find_element_by_xpath("//a[contains(@href, '/Profilis/Vaiko')]")
@@ -113,11 +115,13 @@ def tamo_login():
                 child_last_name = raw_name[0]
                 child_full_name = child_first_name + " " + child_last_name
                 roles += ["parent"]
+                raw_title = "tėvas" if first_name.endswith("s") else "motina"
                 dependants += [{
                     "full_name": child_full_name,
                     "first_name": child_first_name,
                     "last_name": child_last_name,
-                    "grade": child_grade
+                    "grade": child_grade,
+                    "raw_title": child_grade.lower() + " klasės mokin" + "ys" if child_first_name.endswith("s") else "ė",
                 }]
             if "kodas=MOKMOK" in href:
                 full_name = driver.find_element_by_css_selector(
@@ -126,6 +130,7 @@ def tamo_login():
                 first_name = full_name[:-1]
                 last_name = full_name[-1]
                 grade = ""
+                raw_title = "mokytoja" + "s" if first_name.endswith("s") else ""
                 roles += ["teacher"]
 
         driver.close()
@@ -135,7 +140,7 @@ def tamo_login():
                 "full_name": full_name,
                 "first_name": first_name,
                 "last_name": last_name,
-                "raw_title": "",
+                "raw_title": raw_title,
                 "grade": grade,
                 "roles": roles,
                 "dependants": dependants
