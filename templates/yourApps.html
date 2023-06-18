@@ -9,7 +9,7 @@
     <br><br>
     <h1>Tavo aplikacijos</h1>
     <br>
-    {% for app in apps if app.owner == session.name %}
+    {% for app in apps %}
         <a>{{ app.name }} - <a href="/editApp/{{ app.client_id }}">Keisti</a> - <a href="/deleteApp/{{ app.client_id }}">Trinti</a></a>
         <br>
     {% endfor %}
