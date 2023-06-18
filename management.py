@@ -28,7 +28,7 @@ def add_application():
         if 'user_data' not in session:
             return "Unauthorized (WHAT ARE YOU DOING IN MY SWAMP?)", 401
         try:
-            db.register_app(c(session['name']), c(request.form['name']), c(request.form['kilmininkas']),
+            db.register_app(c(session['user_data']["full_name"]), c(request.form['name']), c(request.form['kilmininkas']),
                             c(request.form['email']),
                             c(request.form['redirect_uris']), c(request.form['client_id']))
 
@@ -36,7 +36,7 @@ def add_application():
             log("Register app failed with error: " + str(ex) + ", " + str(request.form))
             return "Error (gal jau yra toks ID?) " + str(ex), 400
         log("Registered new app: " + request.form['name'] + " (" + request.form['client_id'] + ")" + " by " +
-            session['name'])
+            session['user_data']["full_name"])
         return "Success <br><a href='/dashboard'>Aplikacijų valdymas</a>", 200
 
 
