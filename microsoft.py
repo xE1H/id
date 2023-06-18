@@ -65,6 +65,7 @@ def microsoft_callback():
             roles += ["teacher"]
 
         user_data = {
+            "name": raw_data['displayName'],
             "full_name": raw_data['displayName'],
             "first_name": raw_data['givenName'],
             "last_name": raw_data['surname'],

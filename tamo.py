@@ -137,6 +137,7 @@ def tamo_login():
 
         try:
             user_data = {
+                "name": full_name,
                 "full_name": full_name,
                 "first_name": first_name,
                 "last_name": last_name,
