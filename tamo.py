@@ -47,16 +47,6 @@ def tamo_login():
             driver.close()
             return redirect("/tamo/login?error=1")
 
-        # user_data = {
-        #     "full_name": raw_data['displayName'],
-        #     "first_name": raw_data['givenName'],
-        #     "last_name": raw_data['surname'],
-        #     "raw_title": raw_title,
-        #     "grade": grade,
-        #     "roles": roles,
-        #     # Other data that can not be gathered from Microsoft
-        #     "dependants": []
-        # }
         roles = []
         dependants = []
 

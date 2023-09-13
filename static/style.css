@@ -41,6 +41,7 @@ body {
 
     input[type="submit"]:disabled {
         background-color: #4f4f4f !important;
+        color: #f6f6f6 !important;
     }
 }
 
