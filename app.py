@@ -31,7 +31,7 @@ def index():
 
 @app.route("/docs")
 def docs():
-    return redirect("https://hackmd.io/@xE1H/ryD7UtMI3")
+    return redirect("https://github.com/xE1H/id/blob/master/README.md")
 
 
 import oauth2, tamo, microsoft, management  # NOQA
