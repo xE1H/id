@@ -15,7 +15,7 @@
     {% if error == "1" %}
         Neteisingas naudotojo vardas arba slaptažodis
     {% elif error == "2" %}
-        Kažkas negerai, bandykite dar kartą
+        Kažkas negerai, bandykite dar kartą. {{ message }}
     {% endif %}
     </a>
     <form action="/tamo/login" method="post" onsubmit="submitted()">

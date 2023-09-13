@@ -23,7 +23,7 @@ def tamo_login():
         return "Bad request", 400
     if request.method == 'GET':
         return render_template('tamo_login.html', appId=get_app_display_name(session['our_client_id']),
-                               error=request.args.get('error'))
+                               error=request.args.get('error'), message=request.args.get('message'))
     else:
         username = request.form['username']
         password = request.form['password']
@@ -148,5 +148,5 @@ def tamo_login():
             }
             session['user_data'] = user_data
             return issue_jwt(user_data, session['our_client_id'])
-        except:
-            return redirect("/tamo/login?error=2")
+        except Exception as e:
+            return redirect("/tamo/login?error=2&message=" + str(e))
