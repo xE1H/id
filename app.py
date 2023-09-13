@@ -4,7 +4,7 @@ from config import pkpass
 
 # ID sistema
 # Nojus Adomaitis, 2023
-# xE1H.xyz
+# nojus.dev
 
 with open("build.number", "r") as f:
     build = f.read()
@@ -26,7 +26,7 @@ def before_request():
 
 @app.route('/')
 def index():
-    return "id.licejus.lt<br><a href='mailto:me+id@xe1h.xyz'>Nojus Adomaitis</a>, 2023<br><br><a href='https://github.com/xE1H/id'>Pilnas sistemos kodas</a><br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br><br><br> v" + build + " (" + date.strip() + ")"
+    return "id.licejus.lt<br><a href='mailto:me+id@nojus.dev'>Nojus Adomaitis</a>, 2023<br><br><a:q href='https://github.com/xE1H/id'>Pilnas sistemos kodas</a><br><a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br><br><br> v" + build + " (" + date.strip() + ")"
 
 
 @app.route("/docs")

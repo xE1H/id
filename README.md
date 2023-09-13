@@ -42,5 +42,5 @@ JWT tokenas pasirašytas SHA256 algoritmu. Public raktą tikrinimui rasite https
 ### Kaip atjungti userį?
 Userį šiaip turėtumėte atjungti naudodami savo aplikacijos sistemas, bet jei kažkodėl reikėtų atjungti userį nuo visos ID sistemos, tai galima padaryti userį redirectinus i https://id.licejus.lt/v2.0/logout?redirect=URI (redirect'as nebutinas, bet tada tiesiog numes į id.licejus.lt)
 
-### Kilus klausimams, rašykite [me@xe1h.xyz](mailto:me+docs@xe1h.xyz)
+### Kilus klausimams, rašykite [me@nojus.dev](mailto:me+docs@nojus.dev)
 

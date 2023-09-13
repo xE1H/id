@@ -24,7 +24,7 @@ class DB:
         rows = [{'owner': row[0], 'name': row[1], 'kilmininkas': row[2], 'email': row[3],
                  'redirect_uris': row[4].split("\n"), 'client_id': row[5]} for row in rows]
         for client in authorised_clients:
-            rows.append({'owner': "SYSTEM", 'name': client, 'email': "me+" + client + "@xe1h.xyz",
+            rows.append({'owner': "SYSTEM", 'name': client, 'email': "me+" + client + "@nojus.dev",
                          'redirect_uris': authorised_clients[client]['request_uris'], 'client_id': client})
         return rows
 
