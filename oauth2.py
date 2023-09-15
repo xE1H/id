@@ -37,7 +37,10 @@ def login():
     if 'user_data' in session:
         return redirect(url_for('authorize_confirm'))
 
-    return render_template('login.html', appId=get_app_display_name(session['our_client_id']))
+    return render_template(
+        'login.html',
+        appId=get_app_display_name(
+            session['our_client_id']))
 
 
 @app.route('/v2.0/confirm', methods=['GET', 'POST'])
@@ -49,8 +52,11 @@ def authorize_confirm():
         if 'user_data' not in session:
             return redirect(url_for('login'))
 
-        return render_template('authorize_confirm.html', name=session['user_data']["full_name"],
-                               appId=get_app_display_name(session['our_client_id']))
+        return render_template(
+            'authorize_confirm.html',
+            name=session['user_data']["full_name"],
+            appId=get_app_display_name(
+                session['our_client_id']))
     else:
         if 'user_data' not in session:
             return redirect(url_for('login'))

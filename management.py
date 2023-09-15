@@ -11,7 +11,11 @@ db = DB()
 @app.route('/dashboard')
 def dashboard():
     if 'user_data' not in session:
-        return redirect(URL + "/v2.0/authorize?client_id=dashboard&redirect_uri=" + URL + "/dashboard")
+        return redirect(
+            URL +
+            "/v2.0/authorize?client_id=dashboard&redirect_uri=" +
+            URL +
+            "/dashboard")
 
     return render_template('dashboard.html')
 
@@ -28,14 +32,25 @@ def add_application():
         if 'user_data' not in session:
             return "Unauthorized (WHAT ARE YOU DOING IN MY SWAMP?)", 401
         try:
-            db.register_app(c(session['user_data']["full_name"]), c(request.form['name']), c(request.form['kilmininkas']),
-                            c(request.form['email']),
-                            c(request.form['redirect_uris']), c(request.form['client_id']))
+            db.register_app(
+                c(
+                    session['user_data']["full_name"]), c(
+                    request.form['name']), c(
+                    request.form['kilmininkas']), c(
+                    request.form['email']), c(
+                        request.form['redirect_uris']), c(
+                            request.form['client_id']))
 
         except Exception as ex:
-            log("Register app failed with error: " + str(ex) + ", " + str(request.form))
+            log("Register app failed with error: " +
+                str(ex) + ", " + str(request.form))
             return "Error (gal jau yra toks ID?) " + str(ex), 400
-        log("Registered new app: " + request.form['name'] + " (" + request.form['client_id'] + ")" + " by " +
+        log("Registered new app: " +
+            request.form['name'] +
+            " (" +
+            request.form['client_id'] +
+            ")" +
+            " by " +
             session['user_data']["full_name"])
         return "Success <br><a href='/dashboard'>Aplikacijų valdymas</a>", 200
 
@@ -54,14 +69,25 @@ def edit_application(client_id):
         if 'user_data' not in session:
             return "Unauthorized (WHAT ARE YOU DOING IN MY SWAMP?)", 401
         try:
-            db.edit_app(session['user_data']["full_name"], request.form['name'], request.form['kilmininkas'],
-                        request.form['email'],
-                        request.form['redirect_uris'], client_id)
+            db.edit_app(
+                session['user_data']["full_name"],
+                request.form['name'],
+                request.form['kilmininkas'],
+                request.form['email'],
+                request.form['redirect_uris'],
+                client_id)
         except Exception as ex:
-            log("Edit app failed with error: " + str(ex) + ", " + str(request.form))
+            log("Edit app failed with error: " +
+                str(ex) + ", " + str(request.form))
             return "Error (kazkas blogai!!!)", 400
 
-        log("Edited app: " + request.form['name'] + " (" + client_id + ")" + " by " + session['user_data']["full_name"])
+        log("Edited app: " +
+            request.form['name'] +
+            " (" +
+            client_id +
+            ")" +
+            " by " +
+            session['user_data']["full_name"])
         return "Success<br><a href='/dashboard'>Aplikacijų valdymas</a>", 200
 
 
@@ -73,7 +99,8 @@ def delete_application(client_id):
 
     db.delete_app(client_id)
 
-    log("Deleted app: " + client_id + " by " + session['user_data']["full_name"])
+    log("Deleted app: " + client_id + " by " +
+        session['user_data']["full_name"])
     return "Success<br><a href='/dashboard'>Aplikacijų valdymas</a>", 200
 
 
@@ -94,7 +121,8 @@ def your_apps():
 
     apps = db.get_apps()
     # Sort to only show the user's apps
-    apps = [app for app in apps if app['owner'] == session['user_data']["full_name"]]
+    apps = [app for app in apps if app['owner']
+            == session['user_data']["full_name"]]
 
     return render_template('yourApps.html', apps=apps)
 
@@ -105,4 +133,3 @@ def test_page():
         return redirect(url_for('dashboard'))
 
     return render_template('testPage.html')
-

@@ -1,3 +1,4 @@
+from log import log  # For backwords compatibility
 import datetime
 import random
 
@@ -15,23 +16,27 @@ def get_random_string(length):
     return ''.join(random.choice('0123456789abcdef') for _ in range(length))
 
 
-from log import log  # For backwords compatibility
-
-
 def issue_jwt(user_data, intended_aud):
-    log("Issuing JWT for user: " + str(user_data["full_name"]) + " intended for: " + intended_aud)
+    log("Issuing JWT for user: " +
+        str(user_data["full_name"]) +
+        " intended for: " +
+        intended_aud)
     try:
         uri = session['our_redirect_uri']
         aud = session['our_client_id']
         if uri is not None and aud == intended_aud:
-            data = {'iss': issuer, 'aud': aud,'exp': datetime.datetime.now(tz=datetime.timezone.utc) +
-                                                     datetime.timedelta(minutes=10)}
+            data = {
+                'iss': issuer,
+                'aud': aud,
+                'exp': datetime.datetime.now(
+                    tz=datetime.timezone.utc) +
+                datetime.timedelta(
+                    minutes=10)}
             data.update(user_data)
             # log(str(data))
-            token = jwt.encode(data,
-                               our_private_key,
-                               algorithm='RS256',
-                               headers={'kid': '87c0615c19dd98fdc301615d522601f5'})
+            token = jwt.encode(
+                data, our_private_key, algorithm='RS256', headers={
+                    'kid': '87c0615c19dd98fdc301615d522601f5'})
             uri += f"?id_token={token}"
 
             session.pop('our_redirect_uri')
@@ -46,7 +51,7 @@ def issue_jwt(user_data, intended_aud):
 def is_valid_application(client_id, redirect_uri):
     try:
         hard_coded = client_id in authorised_clients or (
-                redirect_uri in authorised_clients[client_id]['request_uris'])
+            redirect_uri in authorised_clients[client_id]['request_uris'])
     except KeyError:
         hard_coded = False
 
