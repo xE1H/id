@@ -3,10 +3,13 @@ ID sistema
 Nojus Adomaitis, 2023
 nojus.dev
 """
+
 # pylint: disable=import-error, unused-import, wrong-import-position
+
 from flask import Flask, session, redirect
 
 from config import pkpass
+
 
 with open("build.number", "r", encoding="utf-8") as f:
     build = f.read()
@@ -50,7 +53,6 @@ def docs():
     :return: Redirect to the documentation
     """
     return redirect("https://github.com/xE1H/id/blob/master/README.md")
-
 
 import microsoft
 import tamo
