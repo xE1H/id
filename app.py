@@ -42,7 +42,7 @@ def index():
     return """id.licejus.lt<br>
     <a href='mailto:me+id@nojus.dev'>Nojus Adomaitis</a>, 2023<br><br>
     <a href='https://github.com/xE1H/id'>Pilnas sistemos kodas</a><br>
-    <a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br><br><br>
+    <a href='/dashboard'>Nori registruoti savo aplikaciją?</a><br><br><br>v
     """ + build + " (" + date.strip() + ")"
 
 
