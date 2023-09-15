@@ -6,7 +6,7 @@ def log(message, route=None):
     if route is None:
         try:
             route = request.path
-        except:
+        except BaseException:
             route = 'APP'
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -17,6 +17,19 @@ def log(message, route=None):
     BOLD = '\033[1m'
     ENDC = '\033[0m'
 
-    print(BLUE + BOLD + " * " + route + ENDC + GREEN + ' | ' + CYAN + str(timestamp) + GREEN + " | " + ENDC + message)
+    print(
+        BLUE +
+        BOLD +
+        " * " +
+        route +
+        ENDC +
+        GREEN +
+        ' | ' +
+        CYAN +
+        str(timestamp) +
+        GREEN +
+        " | " +
+        ENDC +
+        message)
     with open("log.txt", "a") as f:
         f.write(f"{timestamp} | {route} | {message}\n")

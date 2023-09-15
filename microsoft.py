@@ -15,39 +15,47 @@ ms_jwks_client = jwt.PyJWKClient(ms_jwks_url)
 
 @app.route('/microsoft/login')
 def microsoft_login():
-    return redirect(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/authorize" +
-                    "?client_id=" + ms_client_id +
-                    "&response_type=code" +
-                    "&redirect_uri=" + URL + "/microsoft/callback" +
-                    "&response_mode=form_post" +
-                    "&scope=offline_access%20user.read" +
-                    "&domain_hint=licejus.lt" +
-                    "&prompt=select_account")
+    return redirect(
+        f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/authorize" +
+        "?client_id=" +
+        ms_client_id +
+        "&response_type=code" +
+        "&redirect_uri=" +
+        URL +
+        "/microsoft/callback" +
+        "&response_mode=form_post" +
+        "&scope=offline_access%20user.read" +
+        "&domain_hint=licejus.lt" +
+        "&prompt=select_account")
 
 
 @app.route('/microsoft/callback', methods=['POST'])
 def microsoft_callback():
     try:
         session['our_redirect_uri']
-    except:
+    except BaseException:
         return "Bad request", 400
 
     try:
         if request.form['error'] is not None:
-            log(f"Error in Microsoft callback: {request.form['error']}, {request.form['error_description']}")
+            log(
+                f"Error in Microsoft callback: {request.form['error']}, {request.form['error_description']}")
             return redirect(session['our_redirect_uri'] + "?error=true")
-    except:
+    except BaseException:
         pass
 
     try:
         code = request.form['code']
-        access_token = post(f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token", data={
-            "client_id": ms_client_id,
-            "scope": "user.read",
-            "code": code,
-            "redirect_uri": URL + "/microsoft/callback",
-            "grant_type": "authorization_code",
-            "client_secret": ms_client_secret}).json()['access_token']
+        access_token = post(
+            f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0/token",
+            data={
+                "client_id": ms_client_id,
+                "scope": "user.read",
+                "code": code,
+                "redirect_uri": URL +
+                "/microsoft/callback",
+                "grant_type": "authorization_code",
+                "client_secret": ms_client_secret}).json()['access_token']
 
         raw_data = get("https://graph.microsoft.com/v1.0/me", headers={
             "Authorization": "Bearer " + access_token
