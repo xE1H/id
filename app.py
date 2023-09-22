@@ -12,7 +12,7 @@ from config import pkpass
 
 
 with open("build.number", "r", encoding="utf-8") as f:
-    build = f.read()
+    build = str(int(f.read()) + 42)
 
 with open("date.number", "r", encoding="utf-8") as f:
     date = f.read()
