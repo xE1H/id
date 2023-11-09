@@ -48,7 +48,7 @@ body {
 
 .content {
     width: 400px;
-    height: 200px;
+    /*height: 200px; Removed, probably not needed here*/
     margin: 0 auto;
     background-color: #fff;
     padding: 20px;
