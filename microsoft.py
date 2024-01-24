@@ -67,7 +67,7 @@ def microsoft_callback():
 
         if "mokinys" in raw_title or "mokinė" in raw_title:
             grade = raw_title.split(" ")[0]
-            grade = grade[:-1].upper() + grade[-1]
+            grade = grade[:-1].upper() + grade[-1].lower()
             roles += ["student"]
         if "mokytojas" in raw_title or "mokytoja" in raw_title:
             roles += ["teacher"]
