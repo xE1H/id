@@ -7,9 +7,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 from app import app
+from config import enableTest
 from log import log
 from utils import issue_jwt, get_app_display_name
-from config import authorised_clients, enableTest
 
 log("Getting chromedriver", "TAMO")
 chromedriver = ChromeDriverManager().install()
@@ -46,8 +46,8 @@ def tamo_login():
 
         driver.find_element_by_css_selector('.c_btn.submit').click()
 
-        if driver.current_url != 'https://dienynas.tamo.lt/DashboardStudents' and \
-                driver.current_url != 'https://dienynas.tamo.lt/Dashboard':
+        if not driver.current_url.startswith('https://dienynas.tamo.lt/DashboardStudents') and \
+                not driver.current_url.startswith('https://dienynas.tamo.lt/Dashboard'):
             driver.close()
             return redirect("/tamo/login?error=1")
 
@@ -84,7 +84,7 @@ def tamo_login():
                 last_name = raw_name[0]
                 full_name = first_name + " " + last_name
                 raw_title = grade.lower() + " klasės mokin" + \
-                    "ys" if first_name.endswith("s") else "ė"
+                            "ys" if first_name.endswith("s") else "ė"
                 roles += ["student"]
             if "kodas=TEVGLO" in href:
                 duomenu_btn = driver.find_element_by_xpath(
@@ -131,8 +131,8 @@ def tamo_login():
                         "last_name": child_last_name,
                         "grade": child_grade,
                         "raw_title": child_grade.lower() +
-                        " klasės mokin" +
-                        "ys" if child_first_name.endswith("s") else "ė",
+                                     " klasės mokin" +
+                                     "ys" if child_first_name.endswith("s") else "ė",
                     }]
             if "kodas=MOKMOK" in href:
                 full_name = driver.find_element_by_css_selector(
@@ -142,7 +142,7 @@ def tamo_login():
                 last_name = full_name[-1]
                 grade = ""
                 raw_title = "mokytoja" + \
-                    "s" if first_name.endswith("s") else ""
+                            "s" if first_name.endswith("s") else ""
                 roles += ["teacher"]
 
         driver.close()
