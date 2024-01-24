@@ -1,11 +1,11 @@
 import jwt
 from flask import session, redirect, request
+from requests import get, post
 
 from app import app
 from config import URL, ms_client_id, ms_client_secret
 from config import ms_tenant as TENANT
-from utils import get_random_string, log, issue_jwt
-from requests import get, post
+from utils import log, issue_jwt
 
 # Microsoft OpenID Connect
 
@@ -53,7 +53,7 @@ def microsoft_callback():
                 "scope": "user.read",
                 "code": code,
                 "redirect_uri": URL +
-                "/microsoft/callback",
+                                "/microsoft/callback",
                 "grant_type": "authorization_code",
                 "client_secret": ms_client_secret}).json()['access_token']
 
@@ -66,7 +66,7 @@ def microsoft_callback():
         roles = []
 
         if "mokinys" in raw_title or "mokinė" in raw_title:
-            grade = raw_title.split(" ")[0]
+            grade = raw_title.split(" ")[0].strip()
             grade = grade[:-1].upper() + grade[-1].lower()
             roles += ["student"]
         if "mokytojas" in raw_title or "mokytoja" in raw_title:
