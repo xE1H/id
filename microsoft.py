@@ -61,7 +61,7 @@ def microsoft_callback():
             "Authorization": "Bearer " + access_token
         }).json()
 
-        raw_title = raw_data['jobTitle']
+        raw_title = raw_data['jobTitle'].lower()
         grade = ""
         roles = []
 
