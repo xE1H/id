@@ -138,7 +138,7 @@ def tamo_login():
                 full_name = driver.find_element_by_css_selector(
                     'html > body.container > div#header_section.row > div.col-md-14 >'
                     ' div > div > div.header-box > div > div > div > div > div').text.split(" ")
-                first_name = full_name[:-1]
+                first_name = " ".join(full_name[:-1])
                 last_name = full_name[-1]
                 grade = ""
                 raw_title = "mokytoja" + \
