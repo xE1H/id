@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 from app import app
-from config import enableTest
+from config import enable_test
 from log import log
 from utils import issue_jwt, get_app_display_name
 
@@ -31,7 +31,7 @@ def tamo_login():
     else:
         username = request.form['username']
         password = request.form['password']
-        if username == password and enableTest:
+        if username == password and enable_test:
             session['name'] = password
             return issue_jwt(password, session['our_client_id'])
         chrome_options = Options()
