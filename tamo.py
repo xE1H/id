@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 
 from app import app
 from config import enable_test
@@ -12,7 +13,7 @@ from log import log
 from utils import issue_jwt, get_app_display_name
 
 log("Getting chromedriver", "TAMO")
-chromedriver = ChromeDriverManager().install()
+chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 
 
 @app.route('/tamo/login', methods=['GET', 'POST'])

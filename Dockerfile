@@ -9,12 +9,13 @@ RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     unzip \
+    chromium \
+    chromium-driver \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Chrome
-RUN apt-get install -y wget
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+# Set environment variable to use Chromium
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 
 # Copy the current directory contents into the container at /app
 COPY . /app
