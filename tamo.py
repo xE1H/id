@@ -56,10 +56,10 @@ def tamo_login():
         # Output html to check if correct
         print(driver.page_source)
 
-        driver.find_elements('css selector', '#UserName').send_keys(username)
-        driver.find_elements('css selector', '#Password').send_keys(password)
+        driver.find_element('css selector', '#UserName').send_keys(username)
+        driver.find_element('css selector', '#Password').send_keys(password)
 
-        driver.find_elements('css selector', '.c_btn.submit').click()
+        driver.find_element('css selector', '.c_btn.submit').click()
 
         if not driver.current_url.startswith('https://dienynas.tamo.lt/DashboardStudents') and \
                 not driver.current_url.startswith('https://dienynas.tamo.lt/Dashboard'):
