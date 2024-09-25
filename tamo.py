@@ -48,6 +48,9 @@ def tamo_login():
 
         driver.get("https://dienynas.tamo.lt/Prisijungimas/Login")
 
+        # Output html to check if correct
+        print(driver.page_source)
+
         driver.find_element_by_id('UserName').send_keys(username)
         driver.find_element_by_id('Password').send_keys(password)
 
