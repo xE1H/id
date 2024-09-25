@@ -56,10 +56,10 @@ def tamo_login():
         # Output html to check if correct
         print(driver.page_source)
 
-        driver.find_element_by_id('UserName').send_keys(username)
-        driver.find_element_by_id('Password').send_keys(password)
+        driver.find_elements('css selector', '#UserName').send_keys(username)
+        driver.find_elements('css selector', '#Password').send_keys(password)
 
-        driver.find_element_by_css_selector('.c_btn.submit').click()
+        driver.find_elements('css selector', '.c_btn.submit').click()
 
         if not driver.current_url.startswith('https://dienynas.tamo.lt/DashboardStudents') and \
                 not driver.current_url.startswith('https://dienynas.tamo.lt/Dashboard'):
@@ -69,7 +69,7 @@ def tamo_login():
         roles = []
         dependants = []
 
-        data = driver.find_elements_by_css_selector(".c_select_options > a")
+        data = driver.find_elements('css selector', ".c_select_options > a")
         # Save current uri to go back
         data = [i.get_attribute('href') for i in data]
 
@@ -81,8 +81,8 @@ def tamo_login():
             driver.get(href)
             raw_title = ""
             if "kodas=MOK" in href and "kodas=MOKMOK" not in href:
-                duomenu_btn = driver.find_element_by_xpath(
-                    "//a[contains(@href, '/Profilis/index/')]")
+                duomenu_btn = driver.find_element("xpath",
+                                                  "//a[contains(@href, '/Profilis/index/')]")
                 driver.get(duomenu_btn.get_attribute('href'))
 
                 WebDriverWait(
@@ -90,8 +90,8 @@ def tamo_login():
                     EC.presence_of_element_located(
                         (By.CSS_SELECTOR, 'div.col-md-6.readonly_input')))
 
-                colmd6 = driver.find_elements_by_css_selector(
-                    "div.col-md-6.readonly_input")
+                colmd6 = driver.find_elements('css selector',
+                                              "div.col-md-6.readonly_input")
 
                 raw_name = colmd6[0].text.split(" ")
                 grade = colmd6[1].text
@@ -102,12 +102,12 @@ def tamo_login():
                             "ys" if first_name.endswith("s") else "ė"
                 roles += ["student"]
             if "kodas=TEVGLO" in href:
-                duomenu_btn = driver.find_element_by_xpath(
-                    "//a[contains(@href, '/Profilis/Vaiko')]")
+                duomenu_btn = driver.find_element("xpath",
+                                                  "//a[contains(@href, '/Profilis/Vaiko')]")
                 vaiko_duomenu_href = duomenu_btn.get_attribute('href')
 
-                tevo_duomenu_btn = driver.find_element_by_xpath(
-                    "//a[contains(@href, '/Naudotojas/PrisijungimoDuomenysProfile/')]")
+                tevo_duomenu_btn = driver.find_element("xpath",
+                                                       "//a[contains(@href, '/Naudotojas/PrisijungimoDuomenysProfile/')]")
                 tevo_duomenu_href = tevo_duomenu_btn.get_attribute('href')
                 driver.get(tevo_duomenu_href)
 
@@ -116,10 +116,10 @@ def tamo_login():
                     EC.presence_of_element_located(
                         (By.ID, 'Vardas')))
 
-                first_name = driver.find_element_by_id(
-                    "Vardas").get_attribute('value')
-                last_name = driver.find_element_by_id(
-                    "Pavarde").get_attribute('value')
+                first_name = driver.find_element("css selector",
+                                                 "#Vardas").get_attribute('value')
+                last_name = driver.find_element("css selector",
+                                                "#Pavarde").get_attribute('value')
                 full_name = first_name + " " + last_name
                 grade = ""
 
@@ -129,8 +129,8 @@ def tamo_login():
                     EC.presence_of_element_located(
                         (By.CSS_SELECTOR, 'div.col-md-6.readonly_input')))
 
-                colmd6 = driver.find_elements_by_css_selector(
-                    "div.col-md-6.readonly_input")
+                colmd6 = driver.find_elements("css selector",
+                                              "div.col-md-6.readonly_input")
 
                 raw_name = colmd6[0].text.split(" ")
                 child_grade = colmd6[1].text
@@ -150,9 +150,10 @@ def tamo_login():
                                      "ys" if child_first_name.endswith("s") else "ė",
                     }]
             if "kodas=MOKMOK" in href:
-                full_name = driver.find_element_by_css_selector(
-                    'html > body.container > div#header_section.row > div.col-md-14 >'
-                    ' div > div > div.header-box > div > div > div > div > div').text.split(" ")
+                full_name = driver.find_element("css selector",
+                                                'html > body.container > div#header_section.row > div.col-md-14 >'
+                                                ' div > div > div.header-box > div > div > div > div > div').text.split(
+                    " ")
                 first_name = " ".join(full_name[:-1])
                 last_name = full_name[-1]
                 grade = ""
