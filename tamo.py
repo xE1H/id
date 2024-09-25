@@ -16,8 +16,8 @@ from utils import issue_jwt, get_app_display_name
 
 log("Getting chromedriver", "TAMO")
 
-if (shutil.which('chrome') or shutil.which('chromium')) and shutil.which('chromedriver') :
-    chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM)
+if (shutil.which('chrome') or shutil.which('chromium')) and shutil.which('chromedriver'):
+    chromedriver = "chromedriver"
 else:
     chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 
