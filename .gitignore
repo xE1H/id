@@ -1,5 +1,5 @@
 .idea
 .idea/*
 keys
-config.py
 applications.db
+.env
