@@ -44,6 +44,7 @@ def tamo_login():
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
         driver = webdriver.Chrome(chromedriver, options=chrome_options)
 
         driver.get("https://dienynas.tamo.lt/Prisijungimas/Login")
