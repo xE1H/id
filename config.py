@@ -11,6 +11,7 @@ enable_test = os.environ["id_enable_test"] == "true"
 
 authorised_clients = {
     "dashboard": {
-        "request_uris": URL + "/dashboard"  # url of request redirect
+        "request_uris": URL + "/dashboard",  # url of request redirect
+        "name": "id.licejus.lt"
     }
 }  # default clients owned by system
