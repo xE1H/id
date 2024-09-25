@@ -14,7 +14,7 @@ class DB:
     """
 
     def __init__(self):
-        self.conn = sqlite3.connect('applications.db', check_same_thread=False)
+        self.conn = sqlite3.connect('data/applications.db', check_same_thread=False)
         self.cur = self.conn.cursor()
         self.cur.execute(
             'CREATE TABLE IF NOT EXISTS applications (owner TEXT, name TEXT, kilmininkas TEXT, '

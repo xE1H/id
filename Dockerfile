@@ -29,9 +29,6 @@ RUN pip install gunicorn
 # Run the staging setup script
 RUN chmod +x staging-setup.sh && ./staging-setup.sh
 
-# Create config.py from environment variable
-RUN echo "$CONFIG_CONTENT" > config.py
-
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
