@@ -1,5 +1,6 @@
 import shutil
 
+import undetected_chromedriver
 from flask import session, render_template, request, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -41,11 +42,14 @@ def tamo_login():
         if username == password and enable_test:
             session['name'] = password
             return issue_jwt(password, session['our_client_id'])
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-        driver = webdriver.Chrome(chromedriver, options=chrome_options)
+        # chrome_options = Options()
+        # chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--no-sandbox")
+        # chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        # driver = webdriver.Chrome(chromedriver, options=chrome_options)
+
+        driver = undetected_chromedriver.Chrome(headless=True, use_subprocess=False,
+                                                driver_executable_path=chromedriver)
 
         driver.get("https://dienynas.tamo.lt/Prisijungimas/Login")
 
