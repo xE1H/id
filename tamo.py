@@ -1,3 +1,5 @@
+import shutil
+
 from flask import session, render_template, request, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -13,7 +15,11 @@ from log import log
 from utils import issue_jwt, get_app_display_name
 
 log("Getting chromedriver", "TAMO")
-chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+
+if (shutil.which('chrome') or shutil.which('chromium')) and shutil.which('chromedriver') :
+    chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM)
+else:
+    chromedriver = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 
 
 @app.route('/tamo/login', methods=['GET', 'POST'])
