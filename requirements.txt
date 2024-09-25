@@ -1,6 +1,7 @@
 PyJWT~=2.6.0
 Flask~=2.2.2
 selenium~=3.141.0
+urllib3==1.26.16
 cryptography~=43.0.1
 webdriver_manager
 bleach
